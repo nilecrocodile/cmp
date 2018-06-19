@@ -35,7 +35,30 @@
 				cmp.config = {
 					customPurposeListLocation: 'docs/purposes.json',
 					globalConsentLocation: 'docs/portal.html',
-					layout: 'footer'
+					layout: 'footer',
+					css: {
+                        "color-primary": "black",
+                        "color-secondary": "black",
+                        "color-border": "black",
+                        "color-background": "black",
+                        "color-text-primary": "#CFCFCD",
+                        "color-text-secondary": "#CFCFCD",
+                        "color-linkColor": "#0A8FE6",
+                        "color-table-background": "black",
+                        "font-family": "'Open Sans', Arial, sans-serif",
+                        "custom-font-url": null
+					},
+					forceLocale: 'it',
+                    localization: {
+                        it: {
+                            intro: {
+                                description: `Questo sito utilizza i cookie per inviarti pubblicità e servizi in linea con le tue preferenze. Chiudendo questo banner, scorrendo questa pagina o cliccando qualunque suo elemento acconsenti all'uso dei cookie.`,
+                                acceptAll: 'Acconsento',
+                                showPurposes: `Leggi l'informativa`
+                            },
+                        },
+					},
+                    showFooterAfterSubmit: false,
 				};
 				return cmp;
 			}());
