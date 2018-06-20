@@ -16,8 +16,32 @@ export default class IntroV2 extends Component {
 
     static defaultProps = {};
 
+    scrollingGo = () => {
+        this.props.onAcceptAll();
+        document.removeEventListener('scroll', this.scrollingGo);
+    };
+
+    addScrollingAutoAcceptListener = () => {
+        document.addEventListener('scroll', this.scrollingGo);
+    };
+
+    removeScrollingAutoAcceptListener = () => {
+        document.removeEventListener('scroll', this.scrollingGo);
+    };
+
     componentDidMount() {
         this.props.updateCSSPrefs();
+        this.addScrollingAutoAcceptListener();
+        this.props.store.cmp.commands.addEventListener('consentNotRequired', () => {
+            this.removeScrollingAutoAcceptListener();
+        });
+        this.props.store.cmp.commands.addEventListener('onSubmit', () => {
+            this.removeScrollingAutoAcceptListener();
+        });
+    }
+
+    componentWillUnmount() {
+        this.removeScrollingAutoAcceptListener();
     }
 
     render(props, state) {
@@ -27,7 +51,8 @@ export default class IntroV2 extends Component {
             onClose,
             localization,
             store,
-            updateCSSPrefs
+            updateCSSPrefs,
+            consentNotRequired
         } = props;
 
         return (<div class={style.intro}>
@@ -36,10 +61,10 @@ export default class IntroV2 extends Component {
                 localizeKey='description' class={style.contentMessage}>Ads help us run this site. When you use our site
                 selected companies may access and use information on your device for various purposes including to serve
                 relevant ads or personalised content.</LocalLabel> <a onClick={onShowPurposes}><LocalLabel
-                    providedValue={localization && localization.intro ? localization.intro.showPurposes : ''}
-                    localizeKey='showPurposes'>Learn more</LocalLabel></a> <a class="gdprAcceptAllSubmitBtn" onClick={onAcceptAll}><LocalLabel
-                    providedValue={localization && localization.intro ? localization.intro.acceptAll : ''}
-                    localizeKey='acceptAll'>OK, Continue to site</LocalLabel></a></div>
+                providedValue={localization && localization.intro ? localization.intro.showPurposes : ''}
+                localizeKey='showPurposes'>Learn more</LocalLabel></a> <a onClick={onAcceptAll}><LocalLabel
+                providedValue={localization && localization.intro ? localization.intro.acceptAll : ''}
+                localizeKey='acceptAll'>OK, Continue to site</LocalLabel></a></div>
         </div>);
     }
 }
